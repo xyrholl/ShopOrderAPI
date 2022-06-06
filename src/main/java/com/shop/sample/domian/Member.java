@@ -3,22 +3,23 @@ package com.shop.sample.domian;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
+@Builder
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
-    @Id @GeneratedValue
+    @Id
     @Column(name = "memberId")
     private String id;
     private String name;
 
+    @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 

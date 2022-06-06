@@ -4,12 +4,12 @@ import javax.persistence.*;
 
 import com.shop.sample.exception.NotEnoughQuantityException;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
+@Builder
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
 

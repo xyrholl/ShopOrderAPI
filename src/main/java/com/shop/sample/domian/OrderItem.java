@@ -2,12 +2,12 @@ package com.shop.sample.domian;
 
 import javax.persistence.*;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
+@Builder
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem {
 
@@ -23,11 +23,10 @@ public class OrderItem {
     @JoinColumn(name = "itemId")
     private Item item;
 
-    private int perPrice;
     private int count;
 
     public int getFullPrice(){
-        return getPerPrice() * getFullPrice();
+        return item.getPrice() * count;
     }
 
     public void cancel() {
