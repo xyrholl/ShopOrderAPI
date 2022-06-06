@@ -2,6 +2,7 @@ package com.shop.sample.domian;
 
 import javax.persistence.*;
 
+import com.shop.sample.exception.NotEnoughQuantityException;
 import lombok.*;
 
 @Entity
@@ -22,8 +23,15 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId")
     private Item item;
-
     private int count;
+
+    public static OrderItem createOrderItem(Item item, int count){
+        if(count <= 0) throw new NotEnoughQuantityException("주문 수량이 충분하지 않습니다.");
+        OrderItem orderItem = new OrderItem();
+        orderItem.item = item;
+        orderItem.count = count;
+        return orderItem;
+    }
 
     public int getFullPrice(){
         return item.getPrice() * count;

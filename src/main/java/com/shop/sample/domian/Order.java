@@ -17,7 +17,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Table(name = "orders")
 public class Order {
 
-    @Id
+    @Id @GeneratedValue
     @Column(name = "orderId")
     private Long id;
 

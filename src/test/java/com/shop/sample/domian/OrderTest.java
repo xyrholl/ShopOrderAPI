@@ -50,11 +50,8 @@ class OrderTest {
         Item findItem = itemRepository.findById(1L).get();
 
         //when
-        OrderItem orderItem = OrderItem.builder().item(findItem).count(2).build();
-        List<OrderItem> orderItems = new ArrayList<>();
-        orderItems.add(orderItem);
-
-        Order order = Order.builder().id(1L).member(findMember).orderItems(orderItems).orderTime(LocalDateTime.now()).build();
+        OrderItem orderItem = OrderItem.createOrderItem(findItem, 2);
+        Order order = Order.createOrder(findMember, orderItem);
         orderRepository.save(order);
 
         //then
@@ -66,7 +63,4 @@ class OrderTest {
 
     }
 
-    @Test
-    void getTotalPrice() {
-    }
 }
