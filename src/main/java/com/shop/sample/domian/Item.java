@@ -1,7 +1,6 @@
 package com.shop.sample.domian;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 import com.shop.sample.exception.NotEnoughQuantityException;
 
@@ -9,11 +8,17 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
 
+    @Id @GeneratedValue
+    @Column(name = "itemId")
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "memberId")
     private Member seller;
 
     private String name;
@@ -25,11 +30,11 @@ public class Item {
 
     public void soldOut(){
         this.stockQuantity = 0;
-        this.itemStatus = ItemStatus.SOLDOUT;
+        this.itemStatus = ItemStatus.SOLD_OUT;
     }
 
     public void temporarilyOutOfStock(){
-        this.itemStatus = ItemStatus.TEMPOUT;
+        this.itemStatus = ItemStatus.TEMP_OUT;
     }
 
     public void addStock(int quantity){

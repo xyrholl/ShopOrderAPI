@@ -1,0 +1,20 @@
+spring:
+    datasource:
+        url: jdbc:h2:tcp://localhost/~/sample
+        username: local
+        password: 1234
+        driver-class-name: org.h2.Driver
+    jpa:
+        hibernate:
+            ddl-auto: create
+        naming:
+            physical-strategy: com.shop.sample.DBNaming
+        properties:
+            hibernate:
+                format-sql: true
+        show-sql: true
+
+logging:
+    level:
+        org-hibernate-SQL: DEBUG
+        org-hibernate-type: TRACE
