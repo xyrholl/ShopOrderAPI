@@ -37,24 +37,20 @@ public class OrderService {
     }
 
     @Transactional
-    public void order_v2(OrderDTO orderDTO){
+    public void order(OrderDTO orderDTO){
         Member findMember = memberRepository.findById(orderDTO.getMemberId())
             .orElseThrow(() -> new NotFoundDataException("존재하지않는 회원입니다."));
+
         List<OrderItem> orderItems = createOrderItems(orderDTO.getItemDTOs());
         Order order = Order.createOrder(findMember, orderItems.stream().toArray(OrderItem[]::new));
         orderRepository.save(order);
     }
 
     @Transactional
-    public void order_v1(String memberId, Long itemId, int count){
-        Item findItem = itemRepository.findById(itemId)
-                .orElseThrow(() -> new NotFoundDataException("상품이 존재하지 않습니다."));
-        Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundDataException("존재하지않는 회원입니다."));
-
-        OrderItem orderItem = OrderItem.createOrderItem(findItem, count);
-        Order order = Order.createOrder(findMember, orderItem);
-        orderRepository.save(order);
+    public void orderCancel(OrderDTO orderDTO){
+        Order order = orderRepository.findById(orderDTO.getOrderId())
+                .orElseThrow(() -> new NotFoundDataException("존재하지 않는 주문입니다."));
+        order.cancel();
     }
     
 }
