@@ -29,6 +29,7 @@ public class Order {
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @CreationTimestamp
     private LocalDateTime orderTime;
 
     @Enumerated(EnumType.STRING)
@@ -55,8 +56,15 @@ public class Order {
 
     public void cancel(){
         this.status = OrderStatus.CANCEL;
-        for(OrderItem orderItem: orderItems){
+        for(OrderItem orderItem : orderItems){
             orderItem.cancel();
+        }
+    }
+
+    public void completePyment(){
+        this.status = OrderStatus.ORDER;
+        for(OrderItem orderItem : orderItems){
+            orderItem.completePyment();
         }
     }
 

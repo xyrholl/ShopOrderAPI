@@ -15,17 +15,17 @@ class OrderItemTest {
     }
 
     @Test
-    void 주문수량0_테스트(){
+    void 주문수량이_0인_경우(){
         NotEnoughQuantityException thrown = assertThrows(NotEnoughQuantityException.class,
                 () -> OrderItem.createOrderItem(itemCreate(), 0));
         assertEquals(thrown.getMessage(), "주문 수량이 충분하지 않습니다.");
     }
 
     @Test
-    void 주문수량초과_테스트(){
+    void 주문수량이_재고수량보다_많은경우(){
         NotEnoughQuantityException thrown = assertThrows(NotEnoughQuantityException.class,
                 () -> OrderItem.createOrderItem(itemCreate(), 11));
-        assertEquals(thrown.getMessage(), "재고 수량이 충분하지 않습니다.");
+        assertEquals(thrown.getMessage(), "주문 수량이 재고 수량보다 많습니다.");
     }
 
 }
