@@ -55,10 +55,8 @@ public class Order {
     }
 
     public void cancel(){
+        if(this.status == OrderStatus.ORDER) for (OrderItem orderItem : orderItems) { orderItem.cancel(); }
         this.status = OrderStatus.CANCEL;
-        for(OrderItem orderItem : orderItems){
-            orderItem.cancel();
-        }
     }
 
     public void completePyment(){

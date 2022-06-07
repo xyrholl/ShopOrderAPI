@@ -36,10 +36,10 @@ class OrderTest {
 
     private List<Item> createItems(){
         List<Item> items = new ArrayList<>();
-        items.add(Item.builder().id(1L).name("책").price(16000).itemStatus(ItemStatus.SALE).stockQuantity(3).build());
-        items.add(Item.builder().id(2L).name("음료수").price(800).itemStatus(ItemStatus.SALE).stockQuantity(100).build());
-        items.add(Item.builder().id(3L).name("키보드").price(220000).itemStatus(ItemStatus.SALE).stockQuantity(5).build());
-        items.add(Item.builder().id(4L).name("모니터").price(450000).itemStatus(ItemStatus.SALE).stockQuantity(3).build());
+        items.add(Item.builder().name("책").price(16000).itemStatus(ItemStatus.SALE).stockQuantity(3).build());
+        items.add(Item.builder().name("음료수").price(800).itemStatus(ItemStatus.SALE).stockQuantity(100).build());
+        items.add(Item.builder().name("키보드").price(220000).itemStatus(ItemStatus.SALE).stockQuantity(5).build());
+        items.add(Item.builder().name("모니터").price(450000).itemStatus(ItemStatus.SALE).stockQuantity(3).build());
         return items;
     }
 
@@ -51,21 +51,20 @@ class OrderTest {
         List<Item> items = createItems();
         memberRepository.save(member);
         itemRepository.saveAll(items);
-        System.out.println();
 
         Member findMember = memberRepository.findById("test_id")
             .orElseThrow(() -> new NotFoundDataException("존재하지않는 회원입니다."));
-        Item findItem = itemRepository.findById(1L)
-            .orElseThrow(() -> new NotFoundDataException("상품이 존재하지 않습니다."));
+        List<Item> findItems = itemRepository.findAll();
 
         //when
-        OrderItem orderItem = OrderItem.createOrderItem(findItem, 2);
+        OrderItem orderItem = OrderItem.createOrderItem(findItems.get(0), 2);
         Order order = Order.createOrder(findMember, orderItem);
         orderRepository.save(order);
 
         //then
         List<Order> orders = orderRepository.findAll();
         Assertions.assertThat(orders.size()).isEqualTo(1);
+        Assertions.assertThat(orders.get(0).getStatus()).isEqualTo(OrderStatus.WAIT);
         Assertions.assertThat(orders.get(0).getMember().getName()).isEqualTo("lee");
         Assertions.assertThat(orders.get(0).getOrderItems().get(0).getItem().getName()).isEqualTo("책");
         Assertions.assertThat(orders.get(0).getTotalPrice()).isEqualTo(32000);
@@ -88,13 +87,13 @@ class OrderTest {
         memberRepository.save(member);
         List<Item> items = createItems();
         itemRepository.saveAll(items);
-        OrderItemDTO item1 = new OrderItemDTO(1L, 1);
-        OrderItemDTO item2 = new OrderItemDTO(2L, 22);
+        OrderItemDTO item1 = new OrderItemDTO(items.get(0).getId(), 1);
+        OrderItemDTO item2 = new OrderItemDTO(items.get(1).getId(), 22);
         List<OrderItemDTO> orderItemDTOs = new ArrayList<>();
         orderItemDTOs.add(item1);
         orderItemDTOs.add(item2);
 
-        OrderDTO orderDTO = new OrderDTO("test_id", orderItemDTOs);
+        OrderDTO orderDTO = OrderDTO.builder().memberId("test_id").itemDTOs(orderItemDTOs).build();
         
         //when
         Member findMember = memberRepository.findById(orderDTO.getMemberId())
@@ -122,9 +121,8 @@ class OrderTest {
     void 결제완료시_재고수량초과(){
         //given
         단일_상품주문();
-        Item item =  itemRepository.findById(1L)
-                .orElseThrow(()-> new NotFoundDataException("아이템이 없습니다."));
-        item.removeStock(2);
+        List<Item> findItems = itemRepository.findAll();
+        findItems.get(0).removeStock(2);
         
         //when
         Order order = orderRepository.findAll().get(0);
@@ -133,6 +131,56 @@ class OrderTest {
 
         //then
         assertEquals(thrown.getMessage(), "재고가 소진되어 수량이 모자랍니다.");
+    }
+
+    @Transactional
+    private void orderCancel(Order order){
+        order.cancel();
+    }
+
+    @Transactional
+    private void completePyment(Order order){
+        order.completePyment();
+    }
+
+    @Test
+    void 단일상품_결제_전_취소(){
+        //given
+        단일_상품주문();
+        Order order = orderRepository.findAll().get(0);
+
+        //when
+        orderCancel(order);
+
+        //then
+        Order findOrder = orderRepository.findAll().get(0);
+        Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.CANCEL);
+        Assertions.assertThat(findOrder.getOrderItems().get(0).getItem().getStockQuantity()).isEqualTo(3);
+    }
+
+    @Test
+    void 단일상품_결제_완료(){
+        단일_상품주문();
+        Order order = orderRepository.findAll().get(0);
+        completePyment(order);
+
+        Order findOrder = orderRepository.findAll().get(0);
+        Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.ORDER);
+        Assertions.assertThat(findOrder.getOrderItems().get(0).getItem().getStockQuantity()).isEqualTo(1);
+    }
+
+    @Test
+    void 단일상품_결제_후_취소(){
+        단일_상품주문();
+        Order order = orderRepository.findAll().get(0);
+        completePyment(order);
+
+        Order cancelOrder = orderRepository.findAll().get(0);
+        orderCancel(cancelOrder);
+
+        Order findOrder = orderRepository.findAll().get(0);
+        Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.CANCEL);
+        Assertions.assertThat(findOrder.getOrderItems().get(0).getItem().getStockQuantity()).isEqualTo(3);
     }
 
 }

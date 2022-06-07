@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class OrderItemTest {
 
     Item itemCreate(){
-        return Item.builder().id(1L).name("책").price(1000).itemStatus(ItemStatus.SALE).stockQuantity(10).build();
+        return Item.builder().name("책").price(1000).itemStatus(ItemStatus.SALE).stockQuantity(10).build();
     }
 
     @Test
