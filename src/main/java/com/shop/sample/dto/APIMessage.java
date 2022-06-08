@@ -16,6 +16,6 @@ public class APIMessage {
     
     private Status status;
     private String message;
-    private Object data;
+    private Object result_data;
     
 }

@@ -18,7 +18,7 @@ public class PaymentService {
 
     @Transactional
     public void completePymentOrder(OrderDTO orderDTO){
-        Order order = orderRepository.findById(orderDTO.getOrderId())
+        Order order = orderRepository.findById(orderDTO.getId())
             .orElseThrow(() -> new NotFoundDataException());
         order.completePyment();
     }

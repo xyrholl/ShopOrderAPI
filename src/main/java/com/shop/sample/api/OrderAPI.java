@@ -7,12 +7,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shop.sample.dto.APIMessage;
+import com.shop.sample.dto.Status;
+import com.shop.sample.service.OrderService;
+
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 public class OrderAPI {
 
-    @GetMapping("/order")
+    private final OrderService orderService;
+
+    @GetMapping("/orders")
     public ResponseEntity<?> info(){
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity
+        .ok()
+        .body(APIMessage.builder()
+            .status(Status.OK)
+            .result_data(orderService.orders())
+            .build()
+        );
     }
 
     @PostMapping("/order")

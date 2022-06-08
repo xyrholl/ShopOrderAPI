@@ -35,10 +35,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    public void addOrderItem(OrderItem orderItem){
-        orderItems.add(orderItem);
-    }
-
     public static Order createOrder(Member member, OrderItem... orderItems){
         Order order = new Order();
         order.member = member;
@@ -48,6 +44,11 @@ public class Order {
         order.status = OrderStatus.WAIT;
         order.orderTime = LocalDateTime.now();
         return  order;
+    }
+
+    public void addOrderItem(OrderItem orderItem){
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
     }
 
     public int getTotalPrice(){

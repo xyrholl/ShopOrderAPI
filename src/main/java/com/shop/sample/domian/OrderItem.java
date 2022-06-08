@@ -34,6 +34,10 @@ public class OrderItem {
         return orderItem;
     }
 
+    void setOrder(Order order){
+        this.order = order;
+    }
+
     public int getFullPrice(){
         return item.getPrice() * count;
     }

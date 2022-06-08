@@ -87,16 +87,16 @@ class OrderTest {
         memberRepository.save(member);
         List<Item> items = createItems();
         itemRepository.saveAll(items);
-        OrderItemDTO item1 = new OrderItemDTO(items.get(0).getId(), 1);
-        OrderItemDTO item2 = new OrderItemDTO(items.get(1).getId(), 22);
+        OrderItemDTO item1 = OrderItemDTO.builder().itemId(items.get(0).getId()).count(1).build();
+        OrderItemDTO item2 = OrderItemDTO.builder().itemId(items.get(1).getId()).count(22).build();
         List<OrderItemDTO> orderItemDTOs = new ArrayList<>();
         orderItemDTOs.add(item1);
         orderItemDTOs.add(item2);
 
-        OrderDTO orderDTO = OrderDTO.builder().memberId("test_id").itemDTOs(orderItemDTOs).build();
+        OrderDTO orderDTO = OrderDTO.builder().orderer("test_id").itemDTOs(orderItemDTOs).build();
         
         //when
-        Member findMember = memberRepository.findById(orderDTO.getMemberId())
+        Member findMember = memberRepository.findById(orderDTO.getOrderer())
             .orElseThrow(() -> new NotFoundDataException("존재하지않는 회원입니다."));
         List<OrderItem> orderItems = createOrderItems(orderDTO.getItemDTOs());
         Order order = Order.createOrder(findMember, orderItems.stream().toArray(OrderItem[]::new));

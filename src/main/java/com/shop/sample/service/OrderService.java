@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,12 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
 
+    public List<OrderDTO> orders(/*MemberId*/){
+        List<Order> orders = orderRepository.findAll(/*MemberId*/);
+        if(orders.size() <= 0) throw new NotFoundDataException("주문내역이 없습니다.");
+        return orders.stream().map(OrderDTO::new).collect(Collectors.toList());
+    }
+
     private List<OrderItem> createOrderItems(List<OrderItemDTO> orderItemDtos){
         List<OrderItem> orderItems = new ArrayList<>();
         for (OrderItemDTO orderItemDTO : orderItemDtos) {
@@ -38,9 +45,8 @@ public class OrderService {
 
     @Transactional
     public void order(OrderDTO orderDTO){
-        Member findMember = memberRepository.findById(orderDTO.getMemberId())
+        Member findMember = memberRepository.findById(orderDTO.getOrderer())
             .orElseThrow(() -> new NotFoundDataException("존재하지않는 회원입니다."));
-
         List<OrderItem> orderItems = createOrderItems(orderDTO.getItemDTOs());
         Order order = Order.createOrder(findMember, orderItems.stream().toArray(OrderItem[]::new));
         orderRepository.save(order);
@@ -48,9 +54,9 @@ public class OrderService {
 
     @Transactional
     public void orderCancel(OrderDTO orderDTO){
-        Order order = orderRepository.findById(orderDTO.getOrderId())
+        Order order = orderRepository.findById(orderDTO.getId())
                 .orElseThrow(() -> new NotFoundDataException("존재하지 않는 주문입니다."));
         order.cancel();
     }
-    
+
 }
