@@ -74,13 +74,28 @@ public class ShopTest {
         //when
         List<ShopDTO> shopDTOs = shops.stream().map(ShopDTO::new).collect(Collectors.toList());
 
-        System.out.println(shopDTOs.toString());
         //then
         assertThat(shops.get(0).getItems().size()).isEqualTo(1);
         assertThat(shopDTOs.get(0).getItems().size()).isEqualTo(1);
         assertThat(shopDTOs.get(0).getItems().get(0)).isExactlyInstanceOf(ItemDTO.class);
         assertThat(shopDTOs.get(0).getItems().get(0).getName()).isEqualTo("책");
         assertThat(shopDTOs.get(0).getItems().get(0).getStatus()).isEqualTo("판매중");
+    }
+
+    @Test
+    @Transactional
+    void 샵으로_상품리스트조회(){
+        //given
+        샵_상품_추가();
+
+        //when
+        List<Shop> shops = shopRepository.findAll();
+        ShopDTO shopDTO = new ShopDTO(shops.get(0));
+        List<Item> items = itemRepository.findByShopId(shopDTO.getId());
+        
+        //then
+        assertThat(items.size()).isEqualTo(1);
+
     }
 
 }
