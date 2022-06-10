@@ -66,7 +66,7 @@ public class OrderService {
     @Transactional
     public void orderEdit(Long orderId, OrderDTO orderDTO) {
         Order order = findOne(orderId);
-        List<Long> oldItemIds = order.getOrderItems().stream().mapToLong(i -> i.getId()).boxed().toList();
+        List<Long> oldItemIds = order.getOrderItems().stream().mapToLong(i -> i.getId()).boxed().collect(Collectors.toList());
         itemRepository.deleteAllById(oldItemIds);
         List<OrderItem> newItems = createOrderItems(orderDTO.getItemDTOs());
 
