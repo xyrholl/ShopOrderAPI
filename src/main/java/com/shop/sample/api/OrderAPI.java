@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shop.sample.dto.APIMessage;
-import com.shop.sample.dto.OrderDTO;
 import com.shop.sample.dto.OrderItemDTO;
 import com.shop.sample.dto.Status;
 import com.shop.sample.service.OrderService;

@@ -18,8 +18,8 @@ public class Item {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
-    private Member seller;
+    @JoinColumn(name = "shopId")
+    private Shop shop;
 
     private String name;
     private int price;
@@ -27,6 +27,10 @@ public class Item {
 
     @Enumerated(EnumType.STRING)
     private ItemStatus itemStatus;
+
+    public void setShop(Shop shop){
+        this.shop = shop;
+    }
 
     public void soldOut(){
         this.stockQuantity = 0;
