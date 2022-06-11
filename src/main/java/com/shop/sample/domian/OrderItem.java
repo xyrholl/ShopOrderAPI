@@ -46,7 +46,7 @@ public class OrderItem {
         getItem().addStock(count);
     }
 
-    public void completePyment(){
+    public void completePayment(){
         item.removeStock(count);
     }
 }

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shop.sample.domian.Shop;
-import com.shop.sample.dto.ShopDTO;
+import com.shop.sample.model.ShopDTO;
 import com.shop.sample.repository.ShopRepository;
 
 import lombok.RequiredArgsConstructor;

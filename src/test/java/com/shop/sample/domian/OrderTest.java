@@ -1,7 +1,7 @@
 package com.shop.sample.domian;
 
-import com.shop.sample.dto.OrderDTO;
-import com.shop.sample.dto.OrderItemDTO;
+import com.shop.sample.model.OrderDTO;
+import com.shop.sample.model.OrderItemDTO;
 import com.shop.sample.exception.NotEnoughQuantityException;
 import com.shop.sample.exception.NotFoundDataException;
 import com.shop.sample.repository.ItemRepository;
@@ -93,10 +93,10 @@ class OrderTest {
         orderItemDTOs.add(item1);
         orderItemDTOs.add(item2);
 
-        OrderDTO orderDTO = OrderDTO.builder().orderer("test_id").itemDTOs(orderItemDTOs).build();
+        OrderDTO orderDTO = OrderDTO.builder().orderUserName("test_id").itemDTOs(orderItemDTOs).build();
         
         //when
-        Member findMember = memberRepository.findById(orderDTO.getOrderer())
+        Member findMember = memberRepository.findById(orderDTO.getOrderUserName())
             .orElseThrow(() -> new NotFoundDataException("존재하지않는 회원입니다."));
         List<OrderItem> orderItems = createOrderItems(orderDTO.getItemDTOs());
         Order order = Order.createOrder(findMember, orderItems.stream().toArray(OrderItem[]::new));
@@ -127,20 +127,20 @@ class OrderTest {
         //when
         Order order = orderRepository.findAll().get(0);
         NotEnoughQuantityException thrown = assertThrows(NotEnoughQuantityException.class,
-                () -> order.completePyment());
+                () -> order.completePayment());
 
         //then
         assertEquals(thrown.getMessage(), "재고가 소진되어 수량이 모자랍니다.");
     }
 
     @Transactional
-    private void orderCancel(Order order){
+    void orderCancel(Order order){
         order.cancel();
     }
 
     @Transactional
-    private void completePyment(Order order){
-        order.completePyment();
+    void completePayment(Order order){
+        order.completePayment();
     }
 
     @Test
@@ -162,7 +162,7 @@ class OrderTest {
     void 단일상품_결제_완료(){
         단일_상품주문();
         Order order = orderRepository.findAll().get(0);
-        completePyment(order);
+        completePayment(order);
 
         Order findOrder = orderRepository.findAll().get(0);
         Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.ORDER);
@@ -173,7 +173,7 @@ class OrderTest {
     void 단일상품_결제_후_취소(){
         단일_상품주문();
         Order order = orderRepository.findAll().get(0);
-        completePyment(order);
+        completePayment(order);
 
         Order cancelOrder = orderRepository.findAll().get(0);
         orderCancel(cancelOrder);

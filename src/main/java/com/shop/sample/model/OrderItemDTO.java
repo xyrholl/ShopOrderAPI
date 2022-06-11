@@ -1,4 +1,4 @@
-package com.shop.sample.dto;
+package com.shop.sample.model;
 
 import com.shop.sample.domian.Item;
 import com.shop.sample.domian.OrderItem;
