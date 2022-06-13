@@ -1,7 +1,6 @@
 package com.shop.sample.repository;
 
 import com.shop.sample.domian.Item;
-import com.shop.sample.domian.Shop;
 
 import java.util.List;
 

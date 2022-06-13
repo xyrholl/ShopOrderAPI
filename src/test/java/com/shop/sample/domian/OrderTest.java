@@ -5,6 +5,8 @@ import com.shop.sample.dto.OrderItemDTO;
 import com.shop.sample.exception.NotEnoughQuantityException;
 import com.shop.sample.repository.ItemRepository;
 import com.shop.sample.repository.OrderRepository;
+import com.shop.sample.service.ItemService;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +26,8 @@ class OrderTest {
     private OrderRepository orderRepository;
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private ItemService itemService;
 
     private List<Item> createItems(){
         List<Item> items = new ArrayList<>();
@@ -45,8 +48,8 @@ class OrderTest {
         List<Item> findItems = itemRepository.findAll();
 
         //when
-        OrderItem orderItem = OrderItem.createOrderItem(findItems.get(0), 2);
-        Order order = Order.createOrder(orderItem);
+        OrderItem orderItem = OrderItem.builder().item(findItems.get(0)).count(2).build();
+        Order order = Order.builder().orderItem(orderItem).build();
         orderRepository.save(order);
 
         //then
@@ -58,11 +61,12 @@ class OrderTest {
 
     }
 
-    private List<OrderItem> createOrderItems(List<OrderItemDTO> orderItemDtos){
+    private List<OrderItem> createOrderItems(List<OrderItemDTO> orderItemDTOs){
         List<OrderItem> orderItems = new ArrayList<>();
-        for (OrderItemDTO orderItemDTO : orderItemDtos) {
-            Optional<Item> findItem = itemRepository.findById(orderItemDTO.getItemId());
-            if(findItem.isPresent())orderItems.add(OrderItem.createOrderItem(findItem.get(), orderItemDTO.getCount()));
+        for (OrderItemDTO orderItemDTO : orderItemDTOs) {
+            Item findItem = itemService.findOne(orderItemDTO.getItemId());
+            OrderItem orderItem = OrderItem.builder().item(findItem).count(orderItemDTO.getCount()).build();
+            orderItems.add(orderItem);
         }
         return orderItems;
     }
@@ -82,7 +86,7 @@ class OrderTest {
         
         //when
         List<OrderItem> orderItems = createOrderItems(orderDTO.getItemDTOs());
-        Order order = Order.createOrder(orderItems.stream().toArray(OrderItem[]::new));
+        Order order = Order.builder().orderItems(orderItems).build();
         orderRepository.save(order);
 
         //then

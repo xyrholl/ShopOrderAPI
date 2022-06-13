@@ -11,20 +11,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.shop.sample.dto.ShopDTO;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.NonNull;
+import lombok.Singular;
 
 @Entity
-@ToString
-@Builder
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Shop {
     
@@ -32,18 +30,18 @@ public class Shop {
     @Column(name = "shopId")
     private Long id;
     private String name;
+    @CreationTimestamp
     private LocalDateTime createTime;
+    @UpdateTimestamp
     private LocalDateTime updateTime;
 
-    @Builder.Default
+    @Singular
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
     private List<Item> items = new ArrayList<>();
 
-    public static Shop createShop(ShopDTO shopDTO) {
-        Shop shop = new Shop();
-        shop.createTime = LocalDateTime.now();
-        shop.name = shopDTO.getName();
-        return shop;
+    @Builder
+    public Shop(@NonNull String name){
+        this.name = name;
     }
 
     public void addItem(Item item){

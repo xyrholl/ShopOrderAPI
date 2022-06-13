@@ -25,7 +25,7 @@ public class ItemService {
         return findList;
     }
 
-    Item findOne(Long itemId){
+    public Item findOne(Long itemId){
         return itemRepository.findById(itemId)
             .orElseThrow(() -> new NotFoundDataException("상품을 찾을 수 없습니다."));
     }
@@ -36,7 +36,7 @@ public class ItemService {
 
     @Transactional
     public Long create(Shop shop, ItemDTO itemDTO){
-        Item item = Item.create(shop, itemDTO);
+        Item item = itemDTO.toEntity(shop, itemDTO);
         return itemRepository.save(item).getId();
     }
     

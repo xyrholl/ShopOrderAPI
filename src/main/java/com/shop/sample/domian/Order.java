@@ -9,11 +9,10 @@ import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Builder
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 @Table(name = "orders")
@@ -23,24 +22,24 @@ public class Order {
     @Column(name = "orderId")
     private Long id;
 
-    @Builder.Default
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime orderTime;
 
+    @UpdateTimestamp
+    private LocalDateTime updDateTime;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    public static Order createOrder(OrderItem... orderItems){
-        Order order = new Order();
-        for (OrderItem orderItem: orderItems) {
-            order.addOrderItem(orderItem);
+    @Builder
+    public Order(@Singular List<OrderItem> orderItems){
+        this.status = OrderStatus.WAIT;
+        for (OrderItem orderItem : orderItems) {
+            this.addOrderItem(orderItem);
         }
-        order.status = OrderStatus.WAIT;
-        order.orderTime = LocalDateTime.now();
-        return  order;
     }
 
     public void addOrderItem(OrderItem orderItem){

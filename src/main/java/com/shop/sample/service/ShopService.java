@@ -42,10 +42,8 @@ public class ShopService {
 
     @Transactional
     public Long create(ShopDTO shopDTO){
-        Shop shop = Shop.createShop(shopDTO);
+        Shop shop = Shop.builder().name(shopDTO.getName()).build();
         return shopRepository.save(shop).getId();
     }
-
-
     
 }

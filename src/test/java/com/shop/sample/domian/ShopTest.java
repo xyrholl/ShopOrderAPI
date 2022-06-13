@@ -98,4 +98,21 @@ public class ShopTest {
 
     }
 
+    @Test
+    void shop_빌더테스트(){
+        //given
+        Shop builder= Shop.builder().build();
+        shopRepository.save(builder);
+        
+        //when
+        Shop findShop = shopRepository.findAll().get(0);
+
+        //then
+        assertThat(builder.getName()).isEqualTo(null);
+        assertThat(builder.getId()).isEqualTo(1L);
+
+        assertThat(findShop.getName()).isEqualTo(null);
+        assertThat(findShop.getId()).isEqualTo(1L);
+    }
+
 }

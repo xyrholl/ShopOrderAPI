@@ -33,7 +33,8 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
         for (OrderItemDTO orderItemDTO : orderItemDTOs) {
             Item findItem = itemService.findOne(orderItemDTO.getItemId());
-            orderItems.add(OrderItem.createOrderItem(findItem, orderItemDTO.getCount()));
+            OrderItem orderItem = OrderItem.builder().item(findItem).count(orderItemDTO.getCount()).build();
+            orderItems.add(orderItem);
         }
         return orderItems;
     }
@@ -46,7 +47,7 @@ public class OrderService {
     @Transactional
     public Long order(OrderItemDTO... orderItemDTOs){
         List<OrderItem> orderItems = createOrderItems(orderItemDTOs);
-        Order order = Order.createOrder(orderItems.stream().toArray(OrderItem[]::new));
+        Order order = Order.builder().orderItems(orderItems).build();
         return orderRepository.save(order).getId();
     }
 

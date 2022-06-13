@@ -3,14 +3,13 @@ package com.shop.sample.domian;
 import javax.persistence.*;
 
 import com.shop.sample.dto.ItemDTO;
+import com.shop.sample.exception.NotEnoughPriceException;
 import com.shop.sample.exception.NotEnoughQuantityException;
 
 import lombok.*;
 
 @Entity
-@Builder
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
 
@@ -29,29 +28,15 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private ItemStatus itemStatus;
 
-    public static Item create(Shop shop, ItemDTO itemDTO){
-        Item item = new Item();
-        item.name = itemDTO.getName();
-        item.price = itemDTO.getPrice();
-        item.stockQuantity = itemDTO.getStock();
-        item.shop = shop;
-        item.itemStatus = itemStatus(itemDTO.getStatus());
-        return item;
-    }
-
-    private static ItemStatus itemStatus(String itemStatus) {
-        switch(itemStatus){
-            case "품절":
-                return ItemStatus.SOLD_OUT;
-            case "일시품절":
-                return ItemStatus.TEMP_OUT;
-            case "판매중":
-                return ItemStatus.SALE;
-            case "판매대기":
-                return ItemStatus.WAIT;
-            default:
-                return ItemStatus.WAIT;
-        }
+    @Builder
+    public Item(Shop shop, @NonNull String name, int price, int stockQuantity, ItemStatus itemStatus){
+        if(price < 0) throw new NotEnoughPriceException("가격을 0이하로 생성할 수 없습니다.");
+        if(stockQuantity < 0) throw new NotEnoughQuantityException("재고를 0이하로 생성할 수 없습니다.");
+        this.shop = shop;
+        this.name = name;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.itemStatus = itemStatus;
     }
 
     public void setShop(Shop shop){

@@ -6,9 +6,7 @@ import com.shop.sample.exception.NotEnoughQuantityException;
 import lombok.*;
 
 @Entity
-@Builder
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem {
 
@@ -25,16 +23,15 @@ public class OrderItem {
     private Item item;
     private int count;
 
-    public static OrderItem createOrderItem(Item item, int count){
+    @Builder
+    public OrderItem(Item item, int count){
         if(count <= 0) throw new NotEnoughQuantityException("주문 수량이 충분하지 않습니다.");
         if(item.getStockQuantity() < count) throw new NotEnoughQuantityException("주문 수량이 재고 수량보다 많습니다.");
-        OrderItem orderItem = new OrderItem();
-        orderItem.item = item;
-        orderItem.count = count;
-        return orderItem;
+        this.item = item;
+        this.count = count;
     }
 
-    void setOrder(Order order){
+    public void setOrder(Order order){
         this.order = order;
     }
 
