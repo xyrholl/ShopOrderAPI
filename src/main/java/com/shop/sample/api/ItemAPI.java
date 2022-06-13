@@ -22,6 +22,20 @@ public class ItemApi {
     private final ShopService shopService;
 
     /**
+     * 상품 목록조회
+     */
+    @GetMapping("/items")
+    public ResponseEntity<APIMessage> itemList(){
+        return ResponseEntity
+        .ok()
+        .body(
+            APIMessage.builder()
+            .result_data(itemService.findDTOList())
+            .build()
+        );
+    }
+
+    /**
      * 단일 상품조회
      */
     @GetMapping("/item/{itemId}")

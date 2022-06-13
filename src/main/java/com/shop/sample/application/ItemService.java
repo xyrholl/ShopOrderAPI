@@ -1,6 +1,8 @@
 package com.shop.sample.application;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +21,16 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    List<Item> findList(Shop shop){
+    List<Item> findShopItems(Shop shop){
         List<Item> findList = itemRepository.findByShopId(shop.getId());
-        if(findList.size() <= 0) throw new NotFoundDataException("등록된 상품이 없습니다.");
+        if(findList.size() <= 0) throw new NotFoundDataException("해당 상점에 등록된 상품이 없습니다.");
         return findList;
+    }
+
+    public List<ItemDTO> findDTOList(){
+        List<Item> findList = itemRepository.findAll();
+        if(findList.size() <= 0 ) throw new NotFoundDataException("등록된 상품이 없습니다.");
+        return findList.stream().map(ItemDTO::new).collect(Collectors.toList());
     }
 
     public Item findOne(Long itemId){

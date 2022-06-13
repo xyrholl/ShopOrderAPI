@@ -37,12 +37,12 @@ public class ShopService {
     }
 
     public List<ItemDTO> findListItemDTOs(Long shopId){
-        return itemService.findList(findShop(shopId)).stream().map(ItemDTO::new).collect(Collectors.toList());
+        return itemService.findShopItems(findShop(shopId)).stream().map(ItemDTO::new).collect(Collectors.toList());
     }
 
     @Transactional
     public Long create(ShopDTO shopDTO){
-        Shop shop = Shop.builder().name(shopDTO.getName()).build();
+        Shop shop = shopDTO.toEntity(shopDTO);
         return shopRepository.save(shop).getId();
     }
     

@@ -65,7 +65,7 @@ class OrderTest {
         List<OrderItem> orderItems = new ArrayList<>();
         for (OrderItemDTO orderItemDTO : orderItemDTOs) {
             Item findItem = itemService.findOne(orderItemDTO.getItemId());
-            OrderItem orderItem = OrderItem.builder().item(findItem).count(orderItemDTO.getCount()).build();
+            OrderItem orderItem = orderItemDTO.toEntity(findItem, orderItemDTO);
             orderItems.add(orderItem);
         }
         return orderItems;

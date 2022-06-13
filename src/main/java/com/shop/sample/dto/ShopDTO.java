@@ -26,4 +26,10 @@ public class ShopDTO {
         this.items = shop.getItems().stream().map(ItemDTO::new).collect(Collectors.toList());
     }
 
+    public Shop toEntity(ShopDTO shopDTO){
+        return Shop.builder()
+        .name(shopDTO.getName())
+        .build();
+    }
+
 }

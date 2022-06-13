@@ -38,7 +38,7 @@ public class ShopApi {
      * 상점 상품조회
      */
     @GetMapping("/shop/{shopId}")
-    public ResponseEntity<?> shopItems(@PathVariable("shopId") Long shopId){
+    public ResponseEntity<APIMessage> shopItems(@PathVariable("shopId") Long shopId){
         return ResponseEntity
         .ok()
         .body(

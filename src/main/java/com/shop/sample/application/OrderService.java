@@ -30,11 +30,11 @@ public class OrderService {
         return orders.stream().map(OrderDTO::new).collect(Collectors.toList());
     }
 
-    private List<OrderItem> createOrderItems(OrderItemDTO... orderItemDTOs){
+    private List<OrderItem> toOrderItems(OrderItemDTO... orderItemDTOs){
         List<OrderItem> orderItems = new ArrayList<>();
         for (OrderItemDTO orderItemDTO : orderItemDTOs) {
             Item findItem = itemService.findOne(orderItemDTO.getItemId());
-            OrderItem orderItem = OrderItem.builder().item(findItem).count(orderItemDTO.getCount()).build();
+            OrderItem orderItem = orderItemDTO.toEntity(findItem, orderItemDTO);
             orderItems.add(orderItem);
         }
         return orderItems;
@@ -47,7 +47,7 @@ public class OrderService {
 
     @Transactional
     public Long order(OrderItemDTO... orderItemDTOs){
-        List<OrderItem> orderItems = createOrderItems(orderItemDTOs);
+        List<OrderItem> orderItems = toOrderItems(orderItemDTOs);
         Order order = Order.builder().orderItems(orderItems).build();
         return orderRepository.save(order).getId();
     }
@@ -62,7 +62,7 @@ public class OrderService {
     public void orderEdit(Long orderId, OrderItemDTO... orderItemDTOs) {
         Order order = findOne(orderId);
         order.removeOrderItem();
-        List<OrderItem> orderItems = createOrderItems(orderItemDTOs);
+        List<OrderItem> orderItems = toOrderItems(orderItemDTOs);
         for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
         }
