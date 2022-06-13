@@ -59,7 +59,7 @@
 	│       ├── APIMessage.java
 	│       └── Status.java
 	└── resources
-			└── application.yml
+	    └── application.yml
 ```
 
 ### ER Diagram
