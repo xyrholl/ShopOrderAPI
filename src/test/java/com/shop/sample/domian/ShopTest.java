@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.shop.sample.dao.ItemRepository;
+import com.shop.sample.dao.ShopRepository;
 import com.shop.sample.dto.ItemDTO;
 import com.shop.sample.dto.ShopDTO;
-import com.shop.sample.repository.ItemRepository;
-import com.shop.sample.repository.ShopRepository;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -99,19 +99,20 @@ public class ShopTest {
     }
 
     @Test
+    @Transactional
     void shop_빌더테스트(){
         //given
-        Shop builder= Shop.builder().build();
+        Shop builder= Shop.builder().name("널아님").build();
         shopRepository.save(builder);
         
         //when
         Shop findShop = shopRepository.findAll().get(0);
 
         //then
-        assertThat(builder.getName()).isEqualTo(null);
+        assertThat(builder.getName()).isEqualTo("널아님");
         assertThat(builder.getId()).isEqualTo(1L);
 
-        assertThat(findShop.getName()).isEqualTo(null);
+        assertThat(findShop.getName()).isEqualTo("널아님");
         assertThat(findShop.getId()).isEqualTo(1L);
     }
 

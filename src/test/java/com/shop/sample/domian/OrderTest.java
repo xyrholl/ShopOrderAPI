@@ -1,11 +1,11 @@
 package com.shop.sample.domian;
 
+import com.shop.sample.application.ItemService;
+import com.shop.sample.dao.ItemRepository;
+import com.shop.sample.dao.OrderRepository;
 import com.shop.sample.dto.OrderDTO;
 import com.shop.sample.dto.OrderItemDTO;
 import com.shop.sample.exception.NotEnoughQuantityException;
-import com.shop.sample.repository.ItemRepository;
-import com.shop.sample.repository.OrderRepository;
-import com.shop.sample.service.ItemService;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

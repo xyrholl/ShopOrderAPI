@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.shop.sample.repository.ItemRepository;
+import com.shop.sample.dao.ItemRepository;
 
 @SpringBootTest
 public class ItemTest {

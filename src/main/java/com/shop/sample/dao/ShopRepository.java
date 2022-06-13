@@ -1,4 +1,4 @@
-package com.shop.sample.repository;
+package com.shop.sample.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

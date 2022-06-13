@@ -1,4 +1,4 @@
-package com.shop.sample;
+package com.shop.sample.global;
 
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.shop.sample.dto.APIMessage;
-import com.shop.sample.dto.Status;
+import com.shop.sample.model.APIMessage;
+import com.shop.sample.model.Status;
 
 import lombok.extern.slf4j.Slf4j;
 

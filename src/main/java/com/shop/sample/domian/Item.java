@@ -2,7 +2,6 @@ package com.shop.sample.domian;
 
 import javax.persistence.*;
 
-import com.shop.sample.dto.ItemDTO;
 import com.shop.sample.exception.NotEnoughPriceException;
 import com.shop.sample.exception.NotEnoughQuantityException;
 

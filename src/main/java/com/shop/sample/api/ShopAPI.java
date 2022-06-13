@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shop.sample.dto.APIMessage;
+import com.shop.sample.application.ShopService;
 import com.shop.sample.dto.ShopDTO;
-import com.shop.sample.dto.Status;
-import com.shop.sample.service.ShopService;
+import com.shop.sample.model.APIMessage;
+import com.shop.sample.model.Status;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequiredArgsConstructor
-public class ShopAPI {
+public class ShopApi {
     
     private final ShopService shopService;
 

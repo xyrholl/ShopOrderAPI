@@ -6,17 +6,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shop.sample.dto.APIMessage;
+import com.shop.sample.application.ItemService;
+import com.shop.sample.application.ShopService;
 import com.shop.sample.dto.ItemDTO;
-import com.shop.sample.dto.Status;
-import com.shop.sample.service.ItemService;
-import com.shop.sample.service.ShopService;
+import com.shop.sample.model.APIMessage;
+import com.shop.sample.model.Status;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class ItemAPI {
+public class ItemApi {
 
     private final ItemService itemService;
     private final ShopService shopService;

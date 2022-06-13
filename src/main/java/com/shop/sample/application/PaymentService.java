@@ -1,11 +1,11 @@
-package com.shop.sample.service;
+package com.shop.sample.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.shop.sample.dao.OrderRepository;
 import com.shop.sample.domian.Order;
 import com.shop.sample.exception.NotFoundDataException;
-import com.shop.sample.repository.OrderRepository;
 
 import lombok.RequiredArgsConstructor;
 

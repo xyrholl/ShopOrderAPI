@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shop.sample.dto.APIMessage;
+import com.shop.sample.application.OrderService;
 import com.shop.sample.dto.OrderItemDTO;
-import com.shop.sample.dto.Status;
-import com.shop.sample.service.OrderService;
+import com.shop.sample.model.APIMessage;
+import com.shop.sample.model.Status;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class OrderAPI {
+public class OrderApi {
 
     private final OrderService orderService;
 

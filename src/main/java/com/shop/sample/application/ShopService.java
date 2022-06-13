@@ -1,4 +1,4 @@
-package com.shop.sample.service;
+package com.shop.sample.application;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,11 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.shop.sample.dao.ShopRepository;
 import com.shop.sample.domian.Shop;
 import com.shop.sample.dto.ItemDTO;
 import com.shop.sample.dto.ShopDTO;
 import com.shop.sample.exception.NotFoundDataException;
-import com.shop.sample.repository.ShopRepository;
 
 import lombok.RequiredArgsConstructor;
 

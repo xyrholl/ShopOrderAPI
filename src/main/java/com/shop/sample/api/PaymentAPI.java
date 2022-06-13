@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shop.sample.dto.APIMessage;
-import com.shop.sample.service.PaymentService;
+import com.shop.sample.application.PaymentService;
+import com.shop.sample.model.APIMessage;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class PaymentAPI {
+public class PaymentApi {
 
     private final PaymentService paymentService;
 
