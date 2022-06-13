@@ -20,9 +20,9 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     List<Item> findList(Shop shop){
-        List<Item> list = itemRepository.findByShopId(shop.getId());
-        if(list.size() <= 0) throw new NotFoundDataException("등록된 상품이 없습니다.");
-        return list;
+        List<Item> findList = itemRepository.findByShopId(shop.getId());
+        if(findList.size() <= 0) throw new NotFoundDataException("등록된 상품이 없습니다.");
+        return findList;
     }
 
     Item findOne(Long itemId){
