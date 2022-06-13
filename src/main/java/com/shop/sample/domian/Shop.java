@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.shop.sample.model.ShopDTO;
+import com.shop.sample.dto.ShopDTO;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

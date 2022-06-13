@@ -16,10 +16,8 @@ public class Member {
 
     @Id
     @Column(name = "memberId")
-    private Long id;
-    private String userName;
-    private String passWord;
-    private String email;
+    private String id;
+    private String name;
 
     @Builder.Default
     @OneToMany(mappedBy = "member")

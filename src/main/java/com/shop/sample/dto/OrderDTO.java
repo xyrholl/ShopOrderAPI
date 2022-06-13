@@ -1,4 +1,4 @@
-package com.shop.sample.model;
+package com.shop.sample.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,14 +19,14 @@ import lombok.NoArgsConstructor;
 public class OrderDTO {
 
     private Long id;
-    private String orderUserName;
+    private String orderer;
     private List<OrderItemDTO> itemDTOs;
     private String status;
     private LocalDateTime orderTime;
 
     public OrderDTO(Order order){
         this.id = order.getId();
-        this.orderUserName = order.getMember().getUserName();
+        this.orderer = order.getMember().getName();
         this.itemDTOs = order.getOrderItems().stream().map(OrderItemDTO::new).collect(Collectors.toList());
         this.orderTime = order.getOrderTime();
         orderStatus(order.getStatus());

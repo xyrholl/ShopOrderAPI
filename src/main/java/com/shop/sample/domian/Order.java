@@ -10,6 +10,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.shop.sample.dto.OrderDTO;
+
 @Entity
 @Builder
 @Getter
@@ -62,10 +64,10 @@ public class Order {
         this.status = OrderStatus.CANCEL;
     }
 
-    public void completePayment(){
+    public void completePyment(){
         this.status = OrderStatus.ORDER;
         for(OrderItem orderItem : orderItems){
-            orderItem.completePayment();
+            orderItem.completePyment();
         }
     }
 

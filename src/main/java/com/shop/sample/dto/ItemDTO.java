@@ -1,4 +1,4 @@
-package com.shop.sample.model;
+package com.shop.sample.dto;
 
 import com.shop.sample.domian.Item;
 import com.shop.sample.domian.ItemStatus;

@@ -1,4 +1,4 @@
-package com.shop.sample.model;
+package com.shop.sample.dto;
 
 import java.util.ArrayList;
 import java.util.List;

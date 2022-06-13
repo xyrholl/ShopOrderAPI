@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.shop.sample.model.ItemDTO;
-import com.shop.sample.model.ShopDTO;
+import com.shop.sample.dto.ItemDTO;
+import com.shop.sample.dto.ShopDTO;
 import com.shop.sample.repository.ItemRepository;
 import com.shop.sample.repository.ShopRepository;
 
