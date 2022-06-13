@@ -19,14 +19,12 @@ import lombok.NoArgsConstructor;
 public class OrderDTO {
 
     private Long id;
-    private String orderer;
     private List<OrderItemDTO> itemDTOs;
     private String status;
     private LocalDateTime orderTime;
 
     public OrderDTO(Order order){
         this.id = order.getId();
-        this.orderer = order.getMember().getName();
         this.itemDTOs = order.getOrderItems().stream().map(OrderItemDTO::new).collect(Collectors.toList());
         this.orderTime = order.getOrderTime();
         orderStatus(order.getStatus());

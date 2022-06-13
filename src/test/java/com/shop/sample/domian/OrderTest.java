@@ -3,9 +3,7 @@ package com.shop.sample.domian;
 import com.shop.sample.dto.OrderDTO;
 import com.shop.sample.dto.OrderItemDTO;
 import com.shop.sample.exception.NotEnoughQuantityException;
-import com.shop.sample.exception.NotFoundDataException;
 import com.shop.sample.repository.ItemRepository;
-import com.shop.sample.repository.MemberRepository;
 import com.shop.sample.repository.OrderRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,13 +24,7 @@ class OrderTest {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
     private ItemRepository itemRepository;
-
-    private Member createMember(){
-        return Member.builder().id("test_id").name("lee").build();
-    }
 
     private List<Item> createItems(){
         List<Item> items = new ArrayList<>();
@@ -47,25 +39,20 @@ class OrderTest {
     @Test
     void 단일_상품주문() {
         //given
-        Member member = createMember();
         List<Item> items = createItems();
-        memberRepository.save(member);
         itemRepository.saveAll(items);
 
-        Member findMember = memberRepository.findById("test_id")
-            .orElseThrow(() -> new NotFoundDataException("존재하지않는 회원입니다."));
         List<Item> findItems = itemRepository.findAll();
 
         //when
         OrderItem orderItem = OrderItem.createOrderItem(findItems.get(0), 2);
-        Order order = Order.createOrder(findMember, orderItem);
+        Order order = Order.createOrder(orderItem);
         orderRepository.save(order);
 
         //then
         List<Order> orders = orderRepository.findAll();
         Assertions.assertThat(orders.size()).isEqualTo(1);
         Assertions.assertThat(orders.get(0).getStatus()).isEqualTo(OrderStatus.WAIT);
-        Assertions.assertThat(orders.get(0).getMember().getName()).isEqualTo("lee");
         Assertions.assertThat(orders.get(0).getOrderItems().get(0).getItem().getName()).isEqualTo("책");
         Assertions.assertThat(orders.get(0).getTotalPrice()).isEqualTo(32000);
 
@@ -83,8 +70,6 @@ class OrderTest {
     @Test
     void 다중_상품주문(){
         //given
-        Member member = createMember();
-        memberRepository.save(member);
         List<Item> items = createItems();
         itemRepository.saveAll(items);
         OrderItemDTO item1 = OrderItemDTO.builder().itemId(items.get(0).getId()).count(1).build();
@@ -93,13 +78,11 @@ class OrderTest {
         orderItemDTOs.add(item1);
         orderItemDTOs.add(item2);
 
-        OrderDTO orderDTO = OrderDTO.builder().orderer("test_id").itemDTOs(orderItemDTOs).build();
+        OrderDTO orderDTO = OrderDTO.builder().itemDTOs(orderItemDTOs).build();
         
         //when
-        Member findMember = memberRepository.findById(orderDTO.getOrderer())
-            .orElseThrow(() -> new NotFoundDataException("존재하지않는 회원입니다."));
         List<OrderItem> orderItems = createOrderItems(orderDTO.getItemDTOs());
-        Order order = Order.createOrder(findMember, orderItems.stream().toArray(OrderItem[]::new));
+        Order order = Order.createOrder(orderItems.stream().toArray(OrderItem[]::new));
         orderRepository.save(order);
 
         //then
