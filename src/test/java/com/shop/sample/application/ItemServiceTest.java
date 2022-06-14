@@ -87,7 +87,7 @@ public class ItemServiceTest {
     }
 
     @Test
-    void testFindShopItems() {
+    void 샵으로_상품목록조회() {
         Shop given = shopRepository.save(createShop());
         List<Item> whenList = itemRepository.findByShopId(given.getId());
         NotFoundDataException then = assertThrows(NotFoundDataException.class, ()-> whenList(whenList));
