@@ -59,6 +59,7 @@ public class ItemDTO {
     }
 
     private ItemStatus toItemStatus(String itemStatus) {
+        if(itemStatus == null) itemStatus = "판매대기";
         switch(itemStatus){
             case "품절":
                 return ItemStatus.SOLD_OUT;
