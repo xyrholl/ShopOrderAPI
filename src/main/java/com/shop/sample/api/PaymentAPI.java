@@ -21,7 +21,7 @@ public class PaymentApi {
      */
     @PutMapping("/payment/{orderId}")
     public ResponseEntity<APIMessage> payment(@PathVariable("orderId") Long orderId){
-        paymentService.completePymentOrder(orderId);
+        paymentService.completePaymentOrder(orderId);
         return ResponseEntity
         .ok()
         .body(

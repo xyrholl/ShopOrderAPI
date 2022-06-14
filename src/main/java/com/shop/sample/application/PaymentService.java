@@ -14,9 +14,9 @@ public class PaymentService {
     private final OrderService orderService;
 
     @Transactional
-    public void completePymentOrder(Long orderId){
+    public void completePaymentOrder(Long orderId){
         Order order = orderService.findOne(orderId);
-        order.completePyment();
+        order.completePayment();
     }
     
 }

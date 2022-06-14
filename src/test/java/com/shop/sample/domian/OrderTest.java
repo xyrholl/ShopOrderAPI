@@ -114,7 +114,7 @@ class OrderTest {
         //when
         Order order = orderRepository.findAll().get(0);
         NotEnoughQuantityException thrown = assertThrows(NotEnoughQuantityException.class,
-                () -> order.completePyment());
+                () -> order.completePayment());
 
         //then
         assertEquals(thrown.getMessage(), "재고가 소진되어 수량이 모자랍니다.");
@@ -126,8 +126,8 @@ class OrderTest {
     }
 
     @Transactional
-    private void completePyment(Order order){
-        order.completePyment();
+    private void completePayment(Order order){
+        order.completePayment();
     }
 
     @Test
@@ -149,7 +149,7 @@ class OrderTest {
     void 단일상품_결제_완료(){
         단일_상품주문();
         Order order = orderRepository.findAll().get(0);
-        completePyment(order);
+        completePayment(order);
 
         Order findOrder = orderRepository.findAll().get(0);
         Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.ORDER);
@@ -160,7 +160,7 @@ class OrderTest {
     void 단일상품_결제_후_취소(){
         단일_상품주문();
         Order order = orderRepository.findAll().get(0);
-        completePyment(order);
+        completePayment(order);
 
         Order cancelOrder = orderRepository.findAll().get(0);
         orderCancel(cancelOrder);

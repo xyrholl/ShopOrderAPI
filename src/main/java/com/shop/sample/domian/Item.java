@@ -58,7 +58,7 @@ public class Item {
     public void removeStock(int quantity){
         int tempStock = this.stockQuantity - quantity;
         if(tempStock == 0) temporarilyOutOfStock();
-        if(tempStock < 0) throw new NotEnoughQuantityException("재고가 소진되어 수량이 모자랍니다.");
+        if(tempStock < 0) throw new NotEnoughQuantityException("재고수량이 주문수량보다 모자랍니다. "+this.stockQuantity+" 개 까지 주문가능합니다.");
         this.stockQuantity = tempStock;
     }
 

@@ -60,7 +60,7 @@ public class Order {
         this.status = OrderStatus.CANCEL;
     }
 
-    public void completePyment(){
+    public void completePayment(){
         this.status = OrderStatus.ORDER;
         for(OrderItem orderItem : orderItems){
             orderItem.completePyment();

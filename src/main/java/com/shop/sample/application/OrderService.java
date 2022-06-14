@@ -40,7 +40,7 @@ public class OrderService {
         return orderItems;
     }
 
-    private Order findOne(Long orderId){
+    public Order findOne(Long orderId){
         return orderRepository.findById(orderId)
             .orElseThrow(()-> new NotFoundDataException("존재하지 않는 주문입니다."));
     }
