@@ -2,7 +2,7 @@ package com.shop.sample.domian;
 
 import javax.persistence.*;
 
-import com.shop.sample.exception.NotEnoughQuantityException;
+import com.shop.sample.exception.SoldOutException;
 import lombok.*;
 
 @Entity
@@ -25,8 +25,8 @@ public class OrderItem {
 
     @Builder
     public OrderItem(Item item, int count){
-        if(count <= 0) throw new NotEnoughQuantityException("주문 수량이 충분하지 않습니다.");
-        if(item.getStockQuantity() < count) throw new NotEnoughQuantityException("주문 수량이 재고 수량보다 많습니다.");
+        if(count <= 0) throw new SoldOutException("주문 수량이 충분하지 않습니다.");
+        if(item.getStockQuantity() < count) throw new SoldOutException("주문 수량이 재고 수량보다 많습니다.");
         this.item = item;
         this.count = count;
     }

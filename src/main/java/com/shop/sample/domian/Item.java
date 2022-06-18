@@ -3,7 +3,7 @@ package com.shop.sample.domian;
 import javax.persistence.*;
 
 import com.shop.sample.exception.NotEnoughPriceException;
-import com.shop.sample.exception.NotEnoughQuantityException;
+import com.shop.sample.exception.SoldOutException;
 
 import lombok.*;
 
@@ -29,8 +29,8 @@ public class Item {
 
     @Builder
     public Item(Shop shop, @NonNull String name, int price, int stockQuantity, ItemStatus itemStatus){
-        if(price < 0) throw new NotEnoughPriceException("가격을 0이하로 생성할 수 없습니다.");
-        if(stockQuantity < 0) throw new NotEnoughQuantityException("재고를 0이하로 생성할 수 없습니다.");
+        if(price < 0) throw new NotEnoughPriceException("가격을 0미만으로 생성할 수 없습니다.");
+        if(stockQuantity < 0) throw new SoldOutException("재고를 0미만으로 생성할 수 없습니다.");
         this.shop = shop;
         this.name = name;
         this.price = price;
@@ -43,12 +43,7 @@ public class Item {
     }
 
     public void soldOut(){
-        this.stockQuantity = 0;
         this.itemStatus = ItemStatus.SOLD_OUT;
-    }
-
-    public void temporarilyOutOfStock(){
-        this.itemStatus = ItemStatus.TEMP_OUT;
     }
 
     public void addStock(int quantity){
@@ -57,8 +52,8 @@ public class Item {
 
     public void removeStock(int quantity){
         int tempStock = this.stockQuantity - quantity;
-        if(tempStock == 0) temporarilyOutOfStock();
-        if(tempStock < 0) throw new NotEnoughQuantityException("재고수량이 주문수량보다 모자랍니다. "+this.stockQuantity+" 개 까지 주문가능합니다.");
+        if(tempStock == 0) soldOut();
+        if(tempStock < 0) throw new SoldOutException("주문한 상품수량이 재고수량보다 많습니다. 남은 재고수량은 "+this.stockQuantity+" 개 입니다.");
         this.stockQuantity = tempStock;
     }
 

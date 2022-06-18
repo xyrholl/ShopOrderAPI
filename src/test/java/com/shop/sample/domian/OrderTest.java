@@ -5,7 +5,7 @@ import com.shop.sample.dao.ItemRepository;
 import com.shop.sample.dao.OrderRepository;
 import com.shop.sample.dto.OrderDTO;
 import com.shop.sample.dto.OrderItemDTO;
-import com.shop.sample.exception.NotEnoughQuantityException;
+import com.shop.sample.exception.SoldOutException;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -113,20 +113,20 @@ class OrderTest {
         
         //when
         Order order = orderRepository.findAll().get(0);
-        NotEnoughQuantityException thrown = assertThrows(NotEnoughQuantityException.class,
+        SoldOutException thrown = assertThrows(SoldOutException.class,
                 () -> order.completePayment());
 
         //then
-        assertEquals(thrown.getMessage(), "재고가 소진되어 수량이 모자랍니다.");
+        assertEquals(thrown.getMessage(), "주문한 상품수량이 재고수량보다 많습니다. 남은 재고수량은 1 개 입니다.");
     }
 
     @Transactional
-    private void orderCancel(Order order){
+    void orderCancel(Order order){
         order.cancel();
     }
 
     @Transactional
-    private void completePayment(Order order){
+    void completePayment(Order order){
         order.completePayment();
     }
 
