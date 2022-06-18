@@ -3,6 +3,7 @@ package com.shop.sample.domian;
 import com.shop.sample.application.ItemService;
 import com.shop.sample.dao.ItemRepository;
 import com.shop.sample.dao.OrderRepository;
+import com.shop.sample.dao.PricePolicyRepository;
 import com.shop.sample.dto.OrderDTO;
 import com.shop.sample.dto.OrderItemDTO;
 import com.shop.sample.exception.SoldOutException;
@@ -16,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -26,6 +29,8 @@ class OrderTest {
     private OrderRepository orderRepository;
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private PricePolicyRepository pricePolicyRepository;
     @Autowired
     private ItemService itemService;
 
@@ -42,22 +47,21 @@ class OrderTest {
     @Test
     void 단일_상품주문() {
         //given
-        List<Item> items = createItems();
-        itemRepository.saveAll(items);
-
         List<Item> findItems = itemRepository.findAll();
+        Item findItem = findItems.get(0);
 
         //when
-        OrderItem orderItem = OrderItem.builder().item(findItems.get(0)).count(2).build();
-        Order order = Order.builder().orderItem(orderItem).build();
+        OrderItem orderItem = OrderItem.builder().item(findItem).count(2).build();
+        PricePolicy pricePolicy = pricePolicyRepository.findAll().get(0);
+        Order order = Order.builder().pricePolicy(pricePolicy).orderItem(orderItem).build();
         orderRepository.save(order);
 
         //then
         List<Order> orders = orderRepository.findAll();
-        Assertions.assertThat(orders.size()).isEqualTo(1);
-        Assertions.assertThat(orders.get(0).getStatus()).isEqualTo(OrderStatus.WAIT);
-        Assertions.assertThat(orders.get(0).getOrderItems().get(0).getItem().getName()).isEqualTo("책");
-        Assertions.assertThat(orders.get(0).getTotalPrice()).isEqualTo(32000);
+        assertThat(orders.size()).isEqualTo(1);
+        assertThat(orders.get(0).getStatus()).isEqualTo(OrderStatus.WAIT);
+        assertThat(orders.get(0).getOrderItems().get(0).getItem().getName()).isEqualTo(findItem.getName());
+        assertThat(orders.get(0).getTotalPrice()).isEqualTo(findItem.getPrice()*2+orders.get(0).getFare());
 
     }
 
@@ -74,26 +78,26 @@ class OrderTest {
     @Test
     void 다중_상품주문(){
         //given
-        List<Item> items = createItems();
-        itemRepository.saveAll(items);
-        OrderItemDTO item1 = OrderItemDTO.builder().itemId(items.get(0).getId()).count(1).build();
-        OrderItemDTO item2 = OrderItemDTO.builder().itemId(items.get(1).getId()).count(22).build();
-        List<OrderItemDTO> orderItemDTOs = new ArrayList<>();
-        orderItemDTOs.add(item1);
-        orderItemDTOs.add(item2);
+        List<Item> findItems = itemRepository.findAll();
+        Item findItemOne = findItems.get(1);
+        Item findItemTwo = findItems.get(2);
 
-        OrderDTO orderDTO = OrderDTO.builder().itemDTOs(orderItemDTOs).build();
+        List<OrderItem> orderItems = new ArrayList<>();
+        orderItems.add(OrderItem.builder().item(findItemOne).count(1).build());
+        orderItems.add(OrderItem.builder().item(findItemTwo).count(1).build());
+
         
         //when
-        List<OrderItem> orderItems = createOrderItems(orderDTO.getItemDTOs());
-        Order order = Order.builder().orderItems(orderItems).build();
+        PricePolicy pricePolicy = pricePolicyRepository.findAll().get(0);
+        Order order = Order.builder().pricePolicy(pricePolicy).orderItems(orderItems).build();
         orderRepository.save(order);
 
         //then
         List<Order> orders = orderRepository.findAll();
-        Assertions.assertThat(orders.size()).isEqualTo(1);
-        Assertions.assertThat(orders.get(0).getOrderItems().size()).isEqualTo(2);
-        Assertions.assertThat(orders.get(0).getTotalPrice()).isEqualTo(33600);
+        assertThat(orders.size()).isEqualTo(1);
+        assertThat(orders.get(0).getOrderItems().size()).isEqualTo(2);
+        assertThat(orders.get(0).getFare()).isEqualTo(2500);
+        assertThat(orders.get(0).getTotalPrice()).isEqualTo(52300);
     }
 
     private void constru(int id, String... str){
@@ -109,7 +113,8 @@ class OrderTest {
         //given
         단일_상품주문();
         List<Item> findItems = itemRepository.findAll();
-        findItems.get(0).removeStock(2);
+        int quantity = findItems.get(0).getStockQuantity();
+        findItems.get(0).removeStock(quantity-1);
         
         //when
         Order order = orderRepository.findAll().get(0);
@@ -141,8 +146,8 @@ class OrderTest {
 
         //then
         Order findOrder = orderRepository.findAll().get(0);
-        Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.CANCEL);
-        Assertions.assertThat(findOrder.getOrderItems().get(0).getItem().getStockQuantity()).isEqualTo(3);
+        assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.CANCEL);
+        assertThat(findOrder.getOrderItems().get(0).getItem().getStockQuantity()).isEqualTo(99);
     }
 
     @Test
@@ -152,8 +157,8 @@ class OrderTest {
         completePayment(order);
 
         Order findOrder = orderRepository.findAll().get(0);
-        Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.ORDER);
-        Assertions.assertThat(findOrder.getOrderItems().get(0).getItem().getStockQuantity()).isEqualTo(1);
+        assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.ORDER);
+        assertThat(findOrder.getOrderItems().get(0).getItem().getStockQuantity()).isEqualTo(97);
     }
 
     @Test
@@ -166,8 +171,8 @@ class OrderTest {
         orderCancel(cancelOrder);
 
         Order findOrder = orderRepository.findAll().get(0);
-        Assertions.assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.CANCEL);
-        Assertions.assertThat(findOrder.getOrderItems().get(0).getItem().getStockQuantity()).isEqualTo(3);
+        assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.CANCEL);
+        assertThat(findOrder.getOrderItems().get(0).getItem().getStockQuantity()).isEqualTo(99);
     }
 
 }

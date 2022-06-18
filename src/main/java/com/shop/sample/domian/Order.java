@@ -25,7 +25,9 @@ public class Order {
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    private Long fare;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pricePolicyId")
+    private PricePolicy pricePolicy;
 
     @CreationTimestamp
     private LocalDateTime orderTime;
@@ -37,8 +39,9 @@ public class Order {
     private OrderStatus status;
 
     @Builder
-    public Order(@Singular List<OrderItem> orderItems){
+    public Order(PricePolicy pricePolicy, @Singular List<OrderItem> orderItems){
         this.status = OrderStatus.WAIT;
+        this.pricePolicy = pricePolicy;
         for (OrderItem orderItem : orderItems) {
             this.addOrderItem(orderItem);
         }
@@ -53,8 +56,18 @@ public class Order {
         orderItems.removeAll(this.orderItems);
     }
 
-    public int getTotalPrice(){
+    public int getOrderPrice(){
         return orderItems.stream().mapToInt(OrderItem::getFullPrice).sum();
+    }
+
+    public int getFare(){
+        int fare = this.pricePolicy.getShippingFee();
+        if(getOrderPrice() >= this.pricePolicy.getFreeBaseAmount() ) fare = 0;
+        return fare;
+    }
+
+    public int getTotalPrice(){
+        return getOrderPrice()+getFare();
     }
 
     public void cancel(){

@@ -17,44 +17,21 @@ public class ItemTest {
     @Autowired
     private ItemRepository itemRepository;
 
-    Item createItem(){
-        return Item.builder().name("책").price(12000).stockQuantity(10).itemStatus(ItemStatus.SALE).build();
-    }
-
     @Test
     @Transactional
-    void 상품_재고0일때_변경시_일시품절로전환(){
+    void 상품수량0일때_품절로변경(){
         //given
-        Item item = createItem();
-        itemRepository.save(item);
-
-        //when
         List<Item> findItems = itemRepository.findAll();
-        findItems.get(0).removeStock(10);
+        Item findItem =findItems.get(0);
+        int quantity = findItem.getStockQuantity();
+        //when
+        findItem.removeStock(quantity);
 
         //then
-        List<Item> finalItem = itemRepository.findAll();
-        
-        assertThat(finalItem.get(0).getStockQuantity()).isEqualTo(0);
-        assertThat(finalItem.get(0).getItemStatus()).isEqualTo(ItemStatus.TEMP_OUT);
-    }
+        List<Item> finalItems = itemRepository.findAll();
 
-    @Test
-    @Transactional
-    void 상품품절일때_수량0_변경(){
-        //given
-        Item item = createItem();
-        itemRepository.save(item);
-
-        //when
-        List<Item> findItems = itemRepository.findAll();
-        findItems.get(0).soldOut();
-
-        //then
-        List<Item> finalItem = itemRepository.findAll();
-
-        assertThat(finalItem.get(0).getStockQuantity()).isEqualTo(0);
-        assertThat(finalItem.get(0).getItemStatus()).isEqualTo(ItemStatus.SOLD_OUT);
+        assertThat(finalItems.get(0).getStockQuantity()).isEqualTo(0);
+        assertThat(finalItems.get(0).getItemStatus()).isEqualTo(ItemStatus.SOLD_OUT);
 
     }
     

@@ -57,9 +57,8 @@ public class ItemServiceTest {
         List<ItemDTO> thenList = whenList.stream().map(ItemDTO::new).collect(Collectors.toList());
 
         assertTrue(!TestTransaction.isActive());
-        assertThat(thenList.size()).isEqualTo(1);
+        assertThat(thenList.size()).isEqualTo(20);
         assertThat(thenList.get(0).getClass()).isEqualTo(ItemDTO.class);
-        assertThat(thenList.get(0).getStatus()).isEqualTo("판매대기");
     }
 
     private Item when(Long given){
