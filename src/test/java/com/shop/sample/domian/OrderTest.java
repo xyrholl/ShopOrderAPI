@@ -28,7 +28,6 @@ class OrderTest {
     @Autowired
     private PricePolicyRepository pricePolicyRepository;
 
-
     @Test
     void 단일_상품주문() {
         //given

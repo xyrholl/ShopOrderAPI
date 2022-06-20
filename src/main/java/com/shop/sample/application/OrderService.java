@@ -37,7 +37,7 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
         for (OrderItemDTO orderItemDTO : orderItemDTOs) {
             Item findItem = itemService.findOne(orderItemDTO.getItemId());
-            OrderItem orderItem = orderItemDTO.toEntity(findItem, orderItemDTO);
+            OrderItem orderItem = orderItemDTO.toEntity(findItem);
             orderItems.add(orderItem);
         }
         return orderItems;

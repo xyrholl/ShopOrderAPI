@@ -27,10 +27,10 @@ public class OrderItemDTO {
         this.count = orderItem.getCount();
     }
 
-    public OrderItem toEntity(Item item, OrderItemDTO orderItemDTO){
+    public OrderItem toEntity(Item item){
         return OrderItem.builder()
         .item(item)
-        .count(orderItemDTO.getCount())
+        .count(this.count)
         .build();
     }
 
