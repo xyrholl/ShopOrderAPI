@@ -34,9 +34,12 @@ public class OrderApi {
             .build()
         );
     }
-
+    
     /**
      * 주문 생성
+     * @param orderItemDTOs 상품번호, 수량
+     * @return Long orderId
+     * @exception SoldOutException 재고 부족시 발생
      */
     @PostMapping("/order")
     public ResponseEntity<APIMessage> order(@RequestBody OrderItemDTO... orderItemDTOs){
@@ -46,6 +49,22 @@ public class OrderApi {
             APIMessage.builder()
             .status(Status.OK)
             .result_data(orderService.order(orderItemDTOs))
+            .build()
+        );
+    }
+
+    /**
+     * 주문 조회
+     * @param orderId 주문번호
+     */
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<APIMessage> order(@PathVariable("orderId") Long orderId){
+        return ResponseEntity
+        .ok()
+        .body(
+            APIMessage.builder()
+            .status(Status.OK)
+            .result_data(orderService.toOrderDTO(orderId))
             .build()
         );
     }

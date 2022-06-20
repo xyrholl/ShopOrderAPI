@@ -22,15 +22,17 @@ public class Order {
     @Column(name = "orderId")
     private Long id;
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pricePolicyId")
     private PricePolicy pricePolicy;
 
+    private LocalDateTime paymentTime;
+
     @CreationTimestamp
-    private LocalDateTime orderTime;
+    private LocalDateTime createTime;
 
     @UpdateTimestamp
     private LocalDateTime updDateTime;

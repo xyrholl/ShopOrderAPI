@@ -18,15 +18,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderDTO {
 
-    private Long id;
-    private List<OrderItemDTO> itemDTOs;
+    private Long order_id;
+    private List<OrderItemDTO> items;
+    private int order_price;
+    private int shipping_fee;
+    private int total_price;
+    private int payment_price;
     private String status;
     private LocalDateTime orderTime;
 
     public OrderDTO(Order order){
-        this.id = order.getId();
-        this.itemDTOs = order.getOrderItems().stream().map(OrderItemDTO::new).collect(Collectors.toList());
-        this.orderTime = order.getOrderTime();
+        this.order_id = order.getId();
+        this.items = order.getOrderItems().stream().map(OrderItemDTO::new).collect(Collectors.toList());
+        this.orderTime = order.getPaymentTime();
+        this.order_price = order.getOrderPrice();
+        this.shipping_fee = order.getFare();
+        this.total_price = order.getTotalPrice();
         orderStatus(order.getStatus());
     }
 
