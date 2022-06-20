@@ -50,13 +50,13 @@ public class ItemDTO {
         }
     }
 
-    public Item toEntity(Shop shop, ItemDTO itemDTO){
+    public Item toEntity(Shop shop){
         return Item.builder()
         .shop(shop)
-        .name(itemDTO.getName())
-        .price(itemDTO.getPrice())
-        .stockQuantity(itemDTO.getStock())
-        .itemStatus(toItemStatus(itemDTO.getStatus()))
+        .name(this.name)
+        .price(this.price)
+        .stockQuantity(this.stock)
+        .itemStatus(toItemStatus(this.status))
         .build();
     }
 

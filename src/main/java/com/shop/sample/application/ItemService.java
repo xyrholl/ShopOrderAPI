@@ -45,7 +45,7 @@ public class ItemService {
 
     @Transactional
     public Long create(Shop shop, ItemDTO itemDTO){
-        Item item = itemDTO.toEntity(shop, itemDTO);
+        Item item = itemDTO.toEntity(shop);
         return itemRepository.save(item).getId();
     }
     
