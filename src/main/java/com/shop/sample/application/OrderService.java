@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
     private final PricePolicyService pricePolicyService;
     private final ItemService itemService;
 

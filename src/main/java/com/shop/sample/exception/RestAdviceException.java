@@ -46,5 +46,15 @@ public class RestAdviceException {
             .build()
         );
     }
+
+    @ExceptionHandler
+    public ResponseEntity<APIMessage> paymentException(PaymentCompleteException e){
+        return ResponseEntity.status(HttpStatus.OK).body(
+            APIMessage.builder()
+            .status(Status.OK)
+            .message(e.getMessage())
+            .build()
+        );
+    }
     
 }

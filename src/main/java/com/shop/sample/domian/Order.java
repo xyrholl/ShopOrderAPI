@@ -11,6 +11,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.shop.sample.exception.PaymentCompleteException;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,6 +31,7 @@ public class Order {
     @JoinColumn(name = "pricePolicyId")
     private PricePolicy pricePolicy;
 
+    private int paymentPrice;
     private LocalDateTime paymentTime;
 
     @CreationTimestamp
@@ -50,11 +53,13 @@ public class Order {
     }
 
     public void addOrderItem(OrderItem orderItem){
+        if(this.status == OrderStatus.ORDER) throw new PaymentCompleteException("결제된 주문은 수정이 불가합니다.");
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
 
     public void removeOrderItem(){
+        if(this.status == OrderStatus.ORDER) throw new PaymentCompleteException("결제된 주문은 수정이 불가합니다.");
         orderItems.removeAll(this.orderItems);
     }
 
@@ -78,7 +83,10 @@ public class Order {
     }
 
     public void completePayment(){
+        if(this.status == OrderStatus.ORDER) throw new PaymentCompleteException("결제완료된 주문입니다.");
+        this.paymentPrice = getTotalPrice();
         this.status = OrderStatus.ORDER;
+        this.paymentTime = LocalDateTime.now();
         for(OrderItem orderItem : orderItems){
             orderItem.completePyment();
         }

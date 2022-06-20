@@ -34,6 +34,7 @@ public class OrderDTO {
         this.order_price = order.getOrderPrice();
         this.shipping_fee = order.getFare();
         this.total_price = order.getTotalPrice();
+        this.payment_price = order.getPaymentPrice();
         orderStatus(order.getStatus());
     }
 
