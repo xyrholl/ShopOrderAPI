@@ -39,7 +39,7 @@ public class ItemServiceTest {
         ItemDTO given1 = ItemDTO.builder().name("생성상품").price(9900).stock(10).build();
         Shop given2 = shopRepository.save(createShop());
         
-        Item when = given1.toEntity(given2, given1);
+        Item when = given1.toEntity(given2);
         Item then = itemRepository.save(when);
         itemRepository.flush();
 
@@ -50,13 +50,14 @@ public class ItemServiceTest {
     }
 
     @Test
+    @Transactional
     void ItemDTO목록조회_서비스() {
         상품_생성_서비스();
         List<Item> whenList = itemRepository.findAll();
         if(whenList.size() <= 0) throw new NotFoundDataException();
         List<ItemDTO> thenList = whenList.stream().map(ItemDTO::new).collect(Collectors.toList());
 
-        assertTrue(!TestTransaction.isActive());
+        assertTrue(TestTransaction.isActive());
         assertThat(thenList.size()).isEqualTo(20);
         assertThat(thenList.get(0).getClass()).isEqualTo(ItemDTO.class);
     }
@@ -74,6 +75,7 @@ public class ItemServiceTest {
     }
 
     @Test
+    @Transactional
     void ItemDTO변환_서비스() {
         상품_생성_서비스();
         Item given = itemRepository.findAll().get(0);
