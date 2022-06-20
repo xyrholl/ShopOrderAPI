@@ -1,14 +1,10 @@
 package com.shop.sample.domian;
 
-import com.shop.sample.application.ItemService;
 import com.shop.sample.dao.ItemRepository;
 import com.shop.sample.dao.OrderRepository;
 import com.shop.sample.dao.PricePolicyRepository;
-import com.shop.sample.dto.OrderDTO;
-import com.shop.sample.dto.OrderItemDTO;
 import com.shop.sample.exception.SoldOutException;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,17 +27,6 @@ class OrderTest {
     private ItemRepository itemRepository;
     @Autowired
     private PricePolicyRepository pricePolicyRepository;
-    @Autowired
-    private ItemService itemService;
-
-    private List<Item> createItems(){
-        List<Item> items = new ArrayList<>();
-        items.add(Item.builder().name("책").price(16000).itemStatus(ItemStatus.SALE).stockQuantity(3).build());
-        items.add(Item.builder().name("음료수").price(800).itemStatus(ItemStatus.SALE).stockQuantity(100).build());
-        items.add(Item.builder().name("키보드").price(220000).itemStatus(ItemStatus.SALE).stockQuantity(5).build());
-        items.add(Item.builder().name("모니터").price(450000).itemStatus(ItemStatus.SALE).stockQuantity(3).build());
-        return items;
-    }
 
 
     @Test
@@ -63,16 +48,6 @@ class OrderTest {
         assertThat(orders.get(0).getOrderItems().get(0).getItem().getName()).isEqualTo(findItem.getName());
         assertThat(orders.get(0).getTotalPrice()).isEqualTo(findItem.getPrice()*2+orders.get(0).getFare());
 
-    }
-
-    private List<OrderItem> createOrderItems(List<OrderItemDTO> orderItemDTOs){
-        List<OrderItem> orderItems = new ArrayList<>();
-        for (OrderItemDTO orderItemDTO : orderItemDTOs) {
-            Item findItem = itemService.findOne(orderItemDTO.getItemId());
-            OrderItem orderItem = orderItemDTO.toEntity(findItem, orderItemDTO);
-            orderItems.add(orderItem);
-        }
-        return orderItems;
     }
 
     @Test

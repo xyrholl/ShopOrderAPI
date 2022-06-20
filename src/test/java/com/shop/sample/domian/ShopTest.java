@@ -50,7 +50,7 @@ public class ShopTest {
     @Transactional
     void 샵_상품_추가(){
         //given
-        Shop shop = 샵_생성();
+        Shop shop = shopRepository.findAll().get(0);
         Item item = createItem(shop);
         itemRepository.save(item);
         shop.addItem(item);
@@ -60,8 +60,8 @@ public class ShopTest {
 
         //then
         assertThat(findShops.size()).isEqualTo(1);
-        assertThat(findShops.get(0).getName()).isEqualTo("샵");
-        assertThat(findShops.get(0).getItems().size()).isEqualTo(1);
+        assertThat(findShops.get(0).getName()).isEqualTo("29CM");
+        assertThat(findShops.get(0).getItems().size()).isEqualTo(20);
     }
 
     @Test
@@ -75,10 +75,9 @@ public class ShopTest {
         List<ShopDTO> shopDTOs = shops.stream().map(ShopDTO::new).collect(Collectors.toList());
 
         //then
-        assertThat(shops.get(0).getItems().size()).isEqualTo(1);
-        assertThat(shopDTOs.get(0).getItems().size()).isEqualTo(1);
+        assertThat(shops.get(0).getItems().size()).isEqualTo(20);
+        assertThat(shopDTOs.get(0).getItems().size()).isEqualTo(20);
         assertThat(shopDTOs.get(0).getItems().get(0)).isExactlyInstanceOf(ItemDTO.class);
-        assertThat(shopDTOs.get(0).getItems().get(0).getName()).isEqualTo("책");
         assertThat(shopDTOs.get(0).getItems().get(0).getStatus()).isEqualTo("판매중");
     }
 
@@ -90,11 +89,11 @@ public class ShopTest {
 
         //when
         List<Shop> shops = shopRepository.findAll();
-        ShopDTO shopDTO = new ShopDTO(shops.get(0));
-        List<Item> items = itemRepository.findByShopId(shopDTO.getId());
+        assertThat(shops.get(0).getId().getClass()).isEqualTo(Long.class);
+        List<Item> items = itemRepository.findByShopId(shops.get(0).getId());
         
         //then
-        assertThat(items.size()).isEqualTo(1);
+        assertThat(items.size()).isEqualTo(20);
 
     }
 
@@ -102,18 +101,13 @@ public class ShopTest {
     @Transactional
     void shop_빌더테스트(){
         //given
-        Shop builder= Shop.builder().name("널아님").build();
-        shopRepository.save(builder);
         
         //when
         Shop findShop = shopRepository.findAll().get(0);
 
         //then
-        assertThat(builder.getName()).isEqualTo("널아님");
-        assertThat(builder.getId()).isEqualTo(1L);
-
-        assertThat(findShop.getName()).isEqualTo("널아님");
-        assertThat(findShop.getId()).isEqualTo(1L);
+        assertThat(findShop.getName()).isEqualTo("29CM");
+        assertThat(findShop.getId()).isEqualTo(1);
     }
 
 }
