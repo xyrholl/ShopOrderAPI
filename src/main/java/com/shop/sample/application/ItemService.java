@@ -26,6 +26,7 @@ public class ItemService {
         return findList;
     }
 
+    @Transactional
     public List<ItemDTO> findDTOList(){
         List<Item> findList = itemRepository.findAll();
         if(findList.size() <= 0 ) throw new NotFoundDataException("등록된 상품이 없습니다.");
@@ -37,6 +38,7 @@ public class ItemService {
             .orElseThrow(() -> new NotFoundDataException("상품을 찾을 수 없습니다."));
     }
 
+    @Transactional
     public ItemDTO findOneItemDTO(Long itemId){
         return new ItemDTO(findOne(itemId));
     }

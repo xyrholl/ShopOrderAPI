@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.shop.sample.dao.ItemRepository;
 import com.shop.sample.dao.ShopRepository;
-import com.shop.sample.dto.ItemDTO;
 import com.shop.sample.dto.ShopDTO;
 
 import static org.assertj.core.api.Assertions.*;

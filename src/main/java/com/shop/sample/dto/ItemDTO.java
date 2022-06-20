@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class ItemDTO {
 
     private Long item_id;
+    private String shop_name;
     private String name;
     private int price;
     private int stock;
@@ -26,6 +27,7 @@ public class ItemDTO {
         this.name = item.getName();
         this.price = item.getPrice();
         this.stock = item.getStockQuantity();
+        this.shop_name = item.getShop().getName();
         itemStatus(item.getItemStatus());
     }
 

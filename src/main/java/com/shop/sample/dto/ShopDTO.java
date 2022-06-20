@@ -1,9 +1,5 @@
 package com.shop.sample.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.shop.sample.domian.Shop;
 
