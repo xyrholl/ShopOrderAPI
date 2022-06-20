@@ -4,31 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.shop.sample.domian.Shop;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
 public class ShopDTO {
 
-    private Long id;
+    private Long shop_id;
     private String name;
-    @Builder.Default
-    private List<ItemDTO> items = new ArrayList<>();
 
     public ShopDTO(Shop shop){
-        this.id = shop.getId();
+        this.shop_id = shop.getId();
         this.name = shop.getName();
-        this.items = shop.getItems().stream().map(ItemDTO::new).collect(Collectors.toList());
     }
 
-    public Shop toEntity(ShopDTO shopDTO){
+    public Shop toEntity(){
         return Shop.builder()
-        .name(shopDTO.getName())
+        .name(this.name)
         .build();
     }
 

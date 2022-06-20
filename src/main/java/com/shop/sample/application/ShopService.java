@@ -42,7 +42,7 @@ public class ShopService {
 
     @Transactional
     public Long create(ShopDTO shopDTO){
-        Shop shop = shopDTO.toEntity(shopDTO);
+        Shop shop = shopDTO.toEntity();
         return shopRepository.save(shop).getId();
     }
     

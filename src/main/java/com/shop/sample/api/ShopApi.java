@@ -30,6 +30,8 @@ public class ShopApi {
         .ok()
         .body(
             APIMessage.builder()
+            .status(Status.OK)
+            .result_data(shopService.findShopDTOs())
             .build()
         );
     }
