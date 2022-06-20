@@ -21,7 +21,7 @@ import lombok.Singular;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Shop {
     
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shopId")
     private Long id;
     private String name;

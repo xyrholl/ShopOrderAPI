@@ -2,6 +2,7 @@ package com.shop.sample.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -54,6 +55,16 @@ public class RestAdviceException {
             .status(Status.OK)
             .message(e.getMessage())
             .build()
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<APIMessage> messageNotReadable(HttpMessageNotReadableException e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            APIMessage.builder()
+            .status(Status.Bad_Request)
+            .message(e.getMessage())
+            .build() 
         );
     }
     

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.shop.sample.domian.Order;
 import com.shop.sample.domian.OrderStatus;
 
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
 
     private Long order_id;
@@ -25,12 +27,12 @@ public class OrderDTO {
     private int total_price;
     private int payment_price;
     private String status;
-    private LocalDateTime orderTime;
+    private LocalDateTime order_time;
 
     public OrderDTO(Order order){
         this.order_id = order.getId();
         this.items = order.getOrderItems().stream().map(OrderItemDTO::new).collect(Collectors.toList());
-        this.orderTime = order.getPaymentTime();
+        this.order_time = order.getPaymentTime();
         this.order_price = order.getOrderPrice();
         this.shipping_fee = order.getFare();
         this.total_price = order.getTotalPrice();

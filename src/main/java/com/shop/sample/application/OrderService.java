@@ -1,6 +1,5 @@
 package com.shop.sample.application;
 
-import com.shop.sample.dao.OrderItemRepository;
 import com.shop.sample.dao.OrderRepository;
 import com.shop.sample.domian.Item;
 import com.shop.sample.domian.Order;

@@ -1,12 +1,12 @@
 insert into PRICE_POLICY
-    (PRICE_POLICY_ID, SHIPPING_FEE, FREE_BASE_AMOUNT, CREATE_TIME)
+    (SHIPPING_FEE, FREE_BASE_AMOUNT, CREATE_TIME)
 values
-    (1, 2500, 50000, now());
+    (2500, 50000, now());
 
 insert into SHOP
-(SHOP_ID, NAME, CREATE_TIME)
+    (NAME, CREATE_TIME)
 values
-    (1, '29CM', now());
+    ('29CM', now());
 
 insert into ITEM
     (ITEM_ID, ITEM_STATUS, NAME, PRICE, STOCK_QUANTITY, SHOP_ID)

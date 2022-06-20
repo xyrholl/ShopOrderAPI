@@ -15,14 +15,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ItemDTO {
 
-    private Long id;
+    private Long item_id;
     private String name;
     private int price;
     private int stock;
     private String status;
 
     public ItemDTO(Item item){
-        this.id = item.getId();
+        this.item_id = item.getId();
         this.name = item.getName();
         this.price = item.getPrice();
         this.stock = item.getStockQuantity();

@@ -20,7 +20,7 @@ import com.shop.sample.exception.PaymentCompleteException;
 @Table(name = "orders")
 public class Order {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderId")
     private Long id;
 
