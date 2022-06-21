@@ -36,6 +36,7 @@ public class ShopService {
             .orElseThrow(()-> new NotFoundDataException("샵을 찾을 수 없습니다."));
     }
 
+    @Transactional
     public List<ItemDTO> findListItemDTOs(Long shopId){
         return itemService.findShopItems(findShop(shopId)).stream().map(ItemDTO::new).collect(Collectors.toList());
     }

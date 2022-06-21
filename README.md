@@ -21,6 +21,7 @@
 └── src
     └── main
 	├── java\com\shop\sample
+        │   ├── SampleApplication.java
 	│   ├── api
 	│   │   ├── ItemApi.java
 	│   │   ├── OrderApi.java
@@ -30,11 +31,13 @@
 	│   │   ├── ItemService.java
 	│   │   ├── OrderService.java
 	│   │   ├── PaymentService.java
+        │   │   ├── PricePolicyService.java
 	│   │   └── ShopService.java
 	│   ├── dao
 	│   │   ├── ItemRepository.java
 	│   │   ├── OrderItemRepository.java
 	│   │   ├── OrderRepository.java
+        │   │   ├── PricePolicyRepository.java
 	│   │   └── ShopRepository.java
 	│   ├── domain
 	│   │   ├── Item.java
@@ -42,6 +45,7 @@
 	│   │   ├── Order.java
 	│   │   ├── OrderItem.java
 	│   │   ├── OrderStatus.java
+        │   │   ├── PricePolicy.java
 	│   │   └── Shop.java
 	│   ├── dto
 	│   │   ├── ItemDTO.java
@@ -50,9 +54,10 @@
 	│   │   └── ShopDTO.java
 	│   ├── exception
 	│   │   ├── NotEnoughPriceException.java
-	│   │   ├── NotEnoughQuantityException.java
 	│   │   ├── NotFoundDataException.java
-	│   │   └── RestAdviceException.java
+        │   │   ├── PaymentCompleteException.java
+	│   │   ├── RestAdviceException.java
+        │   │   └── SoldOutException.java
 	│   ├── global
 	│   │   └── DBNaming.java
 	│   └── model
@@ -63,3 +68,7 @@
 ```
 
 ### ER Diagram
+![](ERD.png)
+
+### API DOC
+https://documenter.getpostman.com/view/20485363/UzBnrSYt#intro
