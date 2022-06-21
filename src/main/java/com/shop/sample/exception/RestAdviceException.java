@@ -59,6 +59,16 @@ public class RestAdviceException {
     }
 
     @ExceptionHandler
+    public ResponseEntity<APIMessage> soldOutException(SoldOutException e){
+        return ResponseEntity.status(HttpStatus.OK).body(
+            APIMessage.builder()
+            .status(Status.OK)
+            .message(e.getMessage())
+            .build()
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<APIMessage> messageNotReadable(HttpMessageNotReadableException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
             APIMessage.builder()

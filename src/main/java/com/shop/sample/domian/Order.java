@@ -38,7 +38,7 @@ public class Order {
     private LocalDateTime createTime;
 
     @UpdateTimestamp
-    private LocalDateTime updDateTime;
+    private LocalDateTime updateTime;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
