@@ -1,5 +1,6 @@
 package com.shop.sample.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.shop.sample.domian.Item;
 import com.shop.sample.domian.OrderItem;
 
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderItemDTO {
 
     private Long itemId;
