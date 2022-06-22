@@ -8,7 +8,7 @@ spring:
         hibernate:
             ddl-auto: create
             naming:
-                physical-strategy: com.shop.sample.global.DBNaming
+                physical-strategy: kr.co._29cm.homework.global.DBNaming
         properties:
             hibernate:
                 format-sql: true

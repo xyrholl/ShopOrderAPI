@@ -22,7 +22,7 @@
 ```
 └── src
     └── main
-	├── java\com\shop\sample
+	├── java\kr\co\_29cm\homework
         │   ├── SampleApplication.java
 	│   ├── api
 	│   │   ├── ItemApi.java
