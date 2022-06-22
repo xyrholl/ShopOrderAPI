@@ -17,6 +17,8 @@ import com.shop.sample.domian.ItemStatus;
 import com.shop.sample.domian.Order;
 import com.shop.sample.dto.OrderItemDTO;
 import com.shop.sample.exception.SoldOutException;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -40,6 +42,7 @@ public class PaymentServiceTest {
 
 
     @Test
+    @Rollback(value = true)
     void 결제완료_멀티쓰레드_SoldOutException() throws InterruptedException{
         //given
         createOrders();
