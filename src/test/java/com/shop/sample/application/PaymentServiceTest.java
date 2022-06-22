@@ -43,7 +43,7 @@ public class PaymentServiceTest {
 
     @Test
     @Rollback(value = true)
-    void 결제완료_멀티쓰레드_SoldOutException() throws InterruptedException{
+    void 결제완료_멀티쓰레드_SoldOutException(){
         //given
         createOrders();
 
@@ -64,7 +64,12 @@ public class PaymentServiceTest {
                 }
             });
         }
-        latch.await(5, TimeUnit.SECONDS);
+        try {
+            latch.await(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Item item =  itemService.findOne(611019L);
 
         //then
